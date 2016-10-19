@@ -2,9 +2,17 @@
 
 This is a client library for [Mockingbird](https://github.com/nolemmings/mockingbird).
 
-Use mockingbird if you want to run a separate HTTP server with mocked requests while running your normal tests. You'll have to configure you system under test in such a way it directs its requests to the temporary mock server.
+Mockingbird is intended to as a separate HTTP server with mocked requests while running your normal tests. You'll have to configure you system under test in such a way it directs its requests to the temporary mock server.
 
-Example in Mocha:
+## Install
+
+```
+npm install --save-dev mockingbird mockingbird-client
+```
+
+## Example
+
+The following is an example in Mocha:
 
 ```js
 import Mockingbird from '@nolemmings/mockingbird-client';
