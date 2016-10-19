@@ -1,0 +1,16 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb",
+  "rules": {
+    "id-length": [0]
+  },
+  "globals": {
+    "beforeEach": true,
+    "before": true,
+    "afterEach": true,
+    "after": true,
+    "describe": true,
+    "it": true,
+    "expect": true
+  }
+}
