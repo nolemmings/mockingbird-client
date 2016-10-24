@@ -6,6 +6,7 @@
     "type": "git",
     "url": "https://github.com/nolemmings/mockingbird-client.git"
   },
+  "main": "./lib/client.js",
   "author": {
     "name": "Nolemmings",
     "email": "dev@nolemmings.nl"
