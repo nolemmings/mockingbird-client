@@ -8,9 +8,13 @@ class Expectation {
     this.res = null;
     this.rep = 1;
     this.promise = null;
+    this.finished = false;
   }
 
   request(method, url, body = undefined) {
+    if (this.finished) {
+      throw new Error('get()/post()/etc. may not be called after reply(...)');
+    }
     this.req = {
       method,
       url,
@@ -20,6 +24,9 @@ class Expectation {
   }
 
   reply(status, body = undefined, headers = undefined) {
+    if (this.finished) {
+      throw new Error('reply(...) cannot be called twice');
+    }
     this.res = {
       status,
       headers,
@@ -30,6 +37,9 @@ class Expectation {
   }
 
   repeat(repeat) {
+    if (this.finished) {
+      throw new Error('repeat(...) may not be called after reply(...)');
+    }
     this.rep = repeat;
     return this;
   }
@@ -39,11 +49,12 @@ class Expectation {
    */
   end() {
     if (!this.req) {
-      throw new Error('request(...) must be called before end()');
+      throw new Error('get()/post()/etc. must be called before reply()');
     }
     if (!this.res) {
       throw new Error('reply(...) must be called before end()');
     }
+    this.finished = true;
     this.promise = rp({
       method: 'post',
       url: `${this.url}/expectations`,

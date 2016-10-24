@@ -39,4 +39,16 @@ describe('Test mock', () => {
       expect(res.body.username).to.equal('username');
     });
   });
+
+  it('should issue an error when calling a function on finished request', () => {
+    const func = () => {
+      mock.get('/users/test')
+        .reply(200, {
+          id: 'test-id',
+          username: 'username',
+        })
+        .repeat(100);
+    };
+    expect(func).to.throw(/may not be called after reply/);
+  });
 });
