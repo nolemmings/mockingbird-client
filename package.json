@@ -1,6 +1,6 @@
 {
   "name": "@nolemmings/mockingbird-client",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Client for mockingbird server.",
   "repository": {
     "type": "git",
