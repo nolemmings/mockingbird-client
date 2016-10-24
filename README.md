@@ -2,12 +2,12 @@
 
 This is a client library for [Mockingbird](https://github.com/nolemmings/mockingbird).
 
-Mockingbird is intended to as a separate HTTP server with mocked requests while running your normal tests. You'll have to configure you system under test in such a way it directs its requests to the temporary mock server.
+Mockingbird is intended as a separate HTTP server with mocked requests while running your normal tests. You'll have to configure your system under test in such a way it directs its requests to the temporary mock server.
 
 ## Install
 
 ```
-npm install --save-dev mockingbird mockingbird-client
+npm install --save-dev @nolemmings/mockingbird @nolemmings/mockingbird-client
 ```
 
 ## Example
@@ -58,4 +58,10 @@ describe('Test mock', () => {
   });
 });
 
+```
+
+By default, mockingbird will be run at `http://localhost:5000/tests/e2e`. You can configure the `port` and `testId` (`e2e`) in the constructor:
+
+```
+new Mockingbird(5000, 'e2e');
 ```
