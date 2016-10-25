@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [0.1.0] - 2016-10-25
 ### Added
 - Add tests for various scenarios
 - Add `ready()` which waits until all pending promises are fulfilled
