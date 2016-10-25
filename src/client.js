@@ -122,8 +122,8 @@ class Mockingbird {
     return this.getTest().then((result) => {
       for (const expectation of result.expectations) {
         if (expectation.repeat !== -1 && expectation.requestCount < expectation.repeat) {
-          throw new Error(`Expected url ${expectation.request.url} to be called
-            ${expectation.repeat} times but was called ${expectation.requestCount} times`);
+          throw new Error(`Expected url ${expectation.request.url} to be called `
+            + `${expectation.repeat} times but was called ${expectation.requestCount} times`);
         }
       }
     });

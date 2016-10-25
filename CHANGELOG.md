@@ -4,12 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Add test for `mockingbird.getTest()`
+- Add tests for unhappy flows
+
 ### Changed
 - Prepublish now also runs test suite
 - Refactor `.reply()` to return promise
 - Rename `.end()` to `._end()` to indicate it is a private method
-- Add test for `mockingbird.getTest()`
 - Update readme
+- Error message `expectAllConsumed()` no longer contains a newline
 
 ## [0.0.4] - 2016-10-24
 ### Changed

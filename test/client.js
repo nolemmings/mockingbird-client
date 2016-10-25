@@ -91,6 +91,13 @@ describe('Test mock', () => {
       expect(test.expectations[0].repeat).to.equal(1);
       expect(test.expectations[0].testId).to.equal('e2e');
       expect(test.expectations[0].id.length).to.equal(36);
-    })
+    });
+  });
+
+  it('should throw error when expectAllConsumed finds expectation that has not been consumed ', () => {
+    return mock.expectAllConsumed()
+      .catch((err) => {
+        expect(err.message).to.equal('Expected url /users/test to be called 1 times but was called 0 times');
+      });
   });
 });
