@@ -43,6 +43,27 @@ describe('Test mock', () => {
     });
   });
 
+  it('should fail if request body is invalid', () => {
+    const options = {
+      method: 'GET',
+      uri: `${mock.url}/users/test`,
+      headers: {
+        Accept: 'application/json',
+      },
+      json: true,
+      simple: false, // Don't automatically go to the catch() when status != 2XX
+      resolveWithFullResponse: true,
+      body: { hello: 'invalid' },
+    };
+    return rp(options).then((res) => {
+      expect(res.statusCode).to.equal(404);
+      expect(res.body.error).to.equal('Expectation \'GET /tests/e2e/users/test\' not found in test \'e2e\'');
+      expect(res.body.request.method).to.equal('GET');
+      expect(res.body.request.originalUrl).to.equal('/tests/e2e/users/test');
+      expect(res.body.request.body).to.deep.equal({ hello: 'invalid' });
+    });
+  });
+
   it('should get running test', () => {
     return mock.getTest().then((test) => {
       expect(test.expectations.length).to.equal(1);
