@@ -70,6 +70,8 @@ new Mockingbird(5000, 'e2e');
 
 When you have to register a lot of expectations you can use `mock.ready()` to wait until all expectations have been registered at the mockingbird server.
 
+Example:
+
 ```js
 beforeEach(() => {
   mock.post('/users').reply(201, { id: '1' });
@@ -84,7 +86,9 @@ beforeEach(() => {
 
 ## getTest()
 
-Returns the test currently being run registered in the Mockingbird server. Example:
+Returns the test currently being run registered in the Mockingbird server.
+
+Example:
 
 ```js
 mock.getTest().then((test) => {
@@ -104,7 +108,9 @@ mock.getTest().then((test) => {
 
 ## expectAllConsumed()
 
-Returns a promise that fails throws an error when an expectation has not been consumed. Ignores expectations that are defined to repeat indefinitely.
+Returns a promise that fails when an expectation has not been consumed. Ignores expectations that are defined to repeat indefinitely.
+
+Example:
 
 ```js
 return mock.expectAllConsumed()
