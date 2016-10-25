@@ -6,11 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [Unreleased]
 ### Added
 - Add tests for various scenarios
+- Add `ready()` which waits until all pending promises are fulfilled
 
 ### Changed
 - Prepublish now also runs test suite
-- Refactor `.reply()` to return promise
-- Rename `.end()` to `._end()` to indicate it is a private method
+- Refactor `reply()` to return pending promise
+- Rename `end()` to `_end()` to indicate it is a private method
 - Update readme
 - Error message `expectAllConsumed()` no longer contains a newline
 
