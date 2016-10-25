@@ -65,3 +65,23 @@ By default, mockingbird will be run at `http://localhost:5000/tests/e2e`. You ca
 ```
 new Mockingbird(5000, 'e2e');
 ```
+
+## getTest()
+
+Returns the test currently being run registered in the Mockingbird server. Example:
+
+```js
+mock.getTest().then((test) => {
+  // Test contains
+  {
+    expectations: [{
+       request: { method: 'get', url: '/users/test', body: { hello: 'world' } },
+       response: { status: 200, body: { id: 'test-id', username: 'username' } },
+       repeat: 1,
+       testId: 'e2e',
+       requestCount: 0,
+       id: 'c1fb3b82-21d9-4975-bb54-b21866451ab2'
+    }]
+  }
+});
+```
