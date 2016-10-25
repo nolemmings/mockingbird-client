@@ -32,8 +32,7 @@ class Expectation {
       headers,
       body,
     };
-    this.end();
-    return this;
+    return this._end();
   }
 
   repeat(repeat) {
@@ -47,13 +46,7 @@ class Expectation {
   /**
    * Adds expectation to the mockingbird server.
    */
-  end() {
-    if (!this.req) {
-      throw new Error('get()/post()/etc. must be called before reply()');
-    }
-    if (!this.res) {
-      throw new Error('reply(...) must be called before end()');
-    }
+  _end() {
     this.finished = true;
     this.promise = rp({
       method: 'post',
@@ -65,6 +58,7 @@ class Expectation {
         repeat: this.rep,
       },
     });
+    return this.promise;
   }
 }
 
