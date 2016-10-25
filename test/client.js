@@ -94,6 +94,14 @@ describe('Test mock', () => {
     });
   });
 
+  it('should verify expectAllConsumed when no expectations are left', () => {
+    const body = { hello: 'world' };
+    return makeRequest(`${mock.url}/users/test`, body)
+      .then(() => {
+        return mock.expectAllConsumed();
+      });
+  });
+
   it('should throw error when expectAllConsumed finds expectation that has not been consumed ', () => {
     return mock.expectAllConsumed()
       .catch((err) => {
