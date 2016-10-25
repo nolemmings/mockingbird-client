@@ -108,4 +108,21 @@ describe('Test mock', () => {
         expect(err.message).to.equal('Expected url /users/test to be called 1 times but was called 0 times');
       });
   });
+
+  it('should wait for all mocks to be registered properly using mock.ready()', () => {
+    mock.get('/users/test2').reply(204);
+    mock.get('/users/test3').reply(204);
+    mock.get('/users/test4').reply(204);
+    mock.get('/users/test5').reply(204);
+    mock.get('/users/test6').reply(204);
+    mock.get('/users/test7').reply(204);
+    mock.post('/users/test8').reply(204);
+    mock.patch('/users/test9').reply(204);
+    mock.delete('/users/test10').reply(204);
+    return mock.ready().then(() => {
+      return mock.getTest();
+    }).then((test) => {
+      expect(test.expectations.length).to.equal(10);
+    });
+  });
 });

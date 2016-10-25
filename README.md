@@ -12,7 +12,7 @@ npm install --save-dev @nolemmings/mockingbird @nolemmings/mockingbird-client
 
 ## Example
 
-The following is an example in Mocha:
+The following is an example in Mocha (which accepts promises as a return value):
 
 ```js
 import Mockingbird from '@nolemmings/mockingbird-client';
@@ -64,6 +64,22 @@ By default, mockingbird will be run at `http://localhost:5000/tests/e2e`. You ca
 
 ```
 new Mockingbird(5000, 'e2e');
+```
+
+## ready()
+
+When you have to register a lot of expectations you can use `mock.ready()` to wait until all expectations have been registered at the mockingbird server.
+
+```js
+beforeEach(() => {
+  mock.post('/users').reply(201, { id: '1' });
+  mock.post('/users').reply(201, { id: '2' });
+  mock.get('/users/1').reply(200, { id: '2' });
+  mock.get('/users/2').reply(200, { id: '2' });
+  mock.delete('/users/1').reply(204);
+  mock.delete('/users/2').reply(204);
+  return mock.ready();
+});
 ```
 
 ## getTest()

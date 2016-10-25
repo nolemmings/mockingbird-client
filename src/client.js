@@ -70,6 +70,7 @@ class Mockingbird {
     this.server = null;
     this.port = port;
     this.url = `http://localhost:${this.port}/tests/${testId}`;
+    this.expectations = [];
   }
 
   /**
@@ -112,7 +113,20 @@ class Mockingbird {
    * Adds expectation.
    */
   request(method, url, body = undefined) {
-    return (new Expectation(this.url)).request(method, url, body);
+    const expectation = (new Expectation(this.url)).request(method, url, body);
+    this.expectations.push(expectation);
+    return expectation;
+  }
+
+  /**
+   * Waits until all request promises are fulfilled.
+   */
+  ready() {
+    const promises = [];
+    for (const expectation of this.expectations) {
+      promises.push(expectation.promise);
+    }
+    return Promise.all(promises);
   }
 
   /**
@@ -133,6 +147,7 @@ class Mockingbird {
    * Clears all expectations in Mockingbird.
    */
   clean() {
+    this.expectations = [];
     return rp({
       method: 'delete',
       url: this.url,
