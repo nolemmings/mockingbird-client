@@ -5,8 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 ### Added
-- Add test for `mockingbird.getTest()`
-- Add tests for unhappy flows
+- Add tests for various scenarios
 
 ### Changed
 - Prepublish now also runs test suite
