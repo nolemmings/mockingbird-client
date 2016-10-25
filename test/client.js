@@ -2,6 +2,24 @@ import Mockingbird from '../src/client';
 import rp from 'request-promise';
 import { expect } from 'chai';
 
+/**
+ * Makes a JSON request to the mockingbird server.
+ */
+function makeRequest(url, body) {
+  const options = {
+    method: 'GET',
+    uri: url,
+    headers: {
+      Accept: 'application/json',
+    },
+    json: true,
+    simple: false,
+    resolveWithFullResponse: true,
+    body: body,
+  };
+  return rp(options);
+}
+
 describe('Test mock', () => {
   let mock = null;
 
@@ -25,43 +43,26 @@ describe('Test mock', () => {
     return mock.clean(); // Clean state after each test
   });
 
-  it('should mock a user request', () => {
-    const options = {
-      method: 'GET',
-      uri: `${mock.url}/users/test`,
-      headers: {
-        Accept: 'application/json',
-      },
-      json: true,
-      resolveWithFullResponse: true,
-      body: { hello: 'world' },
-    };
-    return rp(options).then((res) => {
-      expect(res.statusCode).to.equal(200);
-      expect(res.body.id).to.equal('test-id');
-      expect(res.body.username).to.equal('username');
-    });
+  it('should succesfully mock request expectation', () => {
+    const body = { hello: 'world' };
+    return makeRequest(`${mock.url}/users/test`, body)
+      .then((res) => {
+        expect(res.statusCode).to.equal(200);
+        expect(res.body.id).to.equal('test-id');
+        expect(res.body.username).to.equal('username');
+      });
   });
 
-  it('should fail if request body is invalid', () => {
-    const options = {
-      method: 'GET',
-      uri: `${mock.url}/users/test`,
-      headers: {
-        Accept: 'application/json',
-      },
-      json: true,
-      simple: false, // Don't automatically go to the catch() when status != 2XX
-      resolveWithFullResponse: true,
-      body: { hello: 'invalid' },
-    };
-    return rp(options).then((res) => {
-      expect(res.statusCode).to.equal(404);
-      expect(res.body.error).to.equal('Expectation \'GET /tests/e2e/users/test\' not found in test \'e2e\'');
-      expect(res.body.request.method).to.equal('GET');
-      expect(res.body.request.originalUrl).to.equal('/tests/e2e/users/test');
-      expect(res.body.request.body).to.deep.equal({ hello: 'invalid' });
-    });
+  it('should fail expectation if request body is invalid', () => {
+    const body = { hello: 'invalid' };
+    return makeRequest(`${mock.url}/users/test`, body)
+      .then((res) => {
+        expect(res.statusCode).to.equal(404);
+        expect(res.body.error).to.equal('Expectation \'GET /tests/e2e/users/test\' not found in test \'e2e\'');
+        expect(res.body.request.method).to.equal('GET');
+        expect(res.body.request.originalUrl).to.equal('/tests/e2e/users/test');
+        expect(res.body.request.body).to.deep.equal({ hello: 'invalid' });
+      });
   });
 
   it('should get running test', () => {
