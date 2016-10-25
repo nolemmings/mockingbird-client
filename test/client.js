@@ -53,6 +53,18 @@ describe('Test mock', () => {
       });
   });
 
+  it('should fail expectation if request url is invalid', () => {
+    const body = { hello: 'world' };
+    return makeRequest(`${mock.url}/users/invalid`, body)
+      .then((res) => {
+        expect(res.statusCode).to.equal(404);
+        expect(res.body.error).to.equal('Expectation \'GET /tests/e2e/users/invalid\' not found in test \'e2e\'');
+        expect(res.body.request.method).to.equal('GET');
+        expect(res.body.request.originalUrl).to.equal('/tests/e2e/users/invalid');
+        expect(res.body.request.body).to.deep.equal({ hello: 'world' });
+      });
+  });
+
   it('should fail expectation if request body is invalid', () => {
     const body = { hello: 'invalid' };
     return makeRequest(`${mock.url}/users/test`, body)
