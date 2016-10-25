@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Rename `.end()` to `._end()` to indicate it is a private method
 - Add test for `mockingbird.getTest()`
 
+## [0.0.4] - 2016-10-24
+### Changed
+- `clean()` now ignores 404 when expectation is not found in test
+
 ## [0.0.3] - 2016-10-24
 ### Changed
 - Throw error when invoking methods after `reply()` has been called.

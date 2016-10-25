@@ -136,6 +136,10 @@ class Mockingbird {
     return rp({
       method: 'delete',
       url: this.url,
+    }).catch((error) =>{
+      if (error.statusCode !== 404) {
+        return Promise.reject(error);
+      }
     });
   }
 }
