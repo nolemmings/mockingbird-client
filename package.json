@@ -33,7 +33,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "prepublish": "gulp build"
+    "prepublish": "gulp build && npm test"
   },
   "peerDependencies": {
     "@nolemmings/mockingbird": ">= 0.2.5 < 2"

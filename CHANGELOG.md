@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Changed
+- Prepublish now also runs test suite
+
 ## [0.0.3] - 2016-10-24
 ### Changed
 - Throw error when invoking methods after `reply()` has been called.
