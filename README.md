@@ -85,3 +85,13 @@ mock.getTest().then((test) => {
   }
 });
 ```
+
+## expectAllConsumed()
+
+Returns a promise that fails throws an error when an expectation has not been consumed. Ignores expectations that are defined to repeat indefinitely.
+
+```js
+return mock.expectAllConsumed()
+  .then(() => console.log('All is fine'))
+  .catch((err) => console.log('Not all expectations are consumed', err));
+```
