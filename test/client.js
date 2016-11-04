@@ -61,7 +61,7 @@ describe('Test mock', () => {
         expect(res.body.error).to.equal('Expectation \'GET /tests/e2e/users/invalid\' not found in test \'e2e\'');
         expect(res.body.request.method).to.equal('GET');
         expect(res.body.request.originalUrl).to.equal('/tests/e2e/users/invalid');
-        expect(res.body.request.body).to.deep.equal({ hello: 'world' });
+        expect(res.body.request.body).to.equal(JSON.stringify({ hello: 'world' }));
       });
   });
 
@@ -73,7 +73,7 @@ describe('Test mock', () => {
         expect(res.body.error).to.equal('Expectation \'GET /tests/e2e/users/test\' not found in test \'e2e\'');
         expect(res.body.request.method).to.equal('GET');
         expect(res.body.request.originalUrl).to.equal('/tests/e2e/users/test');
-        expect(res.body.request.body).to.deep.equal({ hello: 'invalid' });
+        expect(res.body.request.body).to.equal(JSON.stringify({ hello: 'invalid' }));
       });
   });
 
@@ -82,7 +82,7 @@ describe('Test mock', () => {
       expect(test.expectations.length).to.equal(1);
       expect(test.expectations[0].request.method).to.equal('get');
       expect(test.expectations[0].request.url).to.equal('/users/test');
-      expect(test.expectations[0].request.body).to.deep.equal({ hello: 'world' });
+      expect(test.expectations[0].request.body).to.equal(JSON.stringify({ hello: 'world' }));
       expect(test.expectations[0].response.status).to.equal(200);
       expect(test.expectations[0].response.body).to.deep.equal({
         id: 'test-id',
@@ -123,6 +123,23 @@ describe('Test mock', () => {
       return mock.getTest();
     }).then((test) => {
       expect(test.expectations.length).to.equal(10);
+    });
+  });
+
+  it('should work properly with form data as string', () => {
+    return mock.post('/users/test2', 'id=test-id&username=username').reply(200, { id: 'test2' }).then(() => {
+      return rp({
+        method: 'POST',
+        url: `${mock.url}/users/test2`,
+        form: {
+          id: 'test-id',
+          username: 'username',
+        },
+        simple: false,
+        resolveWithFullResponse: true,
+      });
+    }).then((res) => {
+      expect(res.statusCode).to.equal(200);
     });
   });
 });

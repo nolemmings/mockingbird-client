@@ -36,6 +36,6 @@
     "prepublish": "gulp build && npm test"
   },
   "peerDependencies": {
-    "@nolemmings/mockingbird": ">= 0.2.5 < 2"
+    "@nolemmings/mockingbird": ">= 0.3 < 0.4"
   }
 }
