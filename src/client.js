@@ -85,10 +85,15 @@ class Mockingbird {
   }
 
   /**
-   * Starts mock server.
+   * Starts mock server. Returns a promise with the running mock server.
    */
   start() {
-    this.server = mockingbirdServer.listen(this.port);
+    return new Promise((resolve, reject) => {
+      this.server = mockingbirdServer.listen(this.port, (err) => {
+        if (err) return reject(err);
+        resolve(this.server);
+      });
+    });
   }
 
   /**
