@@ -15,10 +15,21 @@ class Expectation {
     if (this.finished) {
       throw new Error('get()/post()/etc. may not be called after reply(...)');
     }
+
+    // Convert body to a string when necessary
+    let requestBody = body;
+    if (typeof body !== 'undefined' && typeof body !== 'string') {
+      if (typeof body === 'object' || typeof body === 'array') {
+        requestBody = JSON.stringify(body);
+      } else {
+        requestBody = `${body}`;
+      }
+    }
+
     this.req = {
       method,
       url,
-      body,
+      body: requestBody,
     };
     return this;
   }
