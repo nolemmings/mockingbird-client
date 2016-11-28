@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## [0.2.1] - 2016-11-28
+### Fixed
+- request-promise dependency is now installed as normal dependency rather than devDependency
+
 ## [0.2.0] - 2016-11-04
 ### Changed
 - Updated peerDependency for mockingbird to 0.3
