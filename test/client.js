@@ -1,6 +1,6 @@
-import Mockingbird from '../src/client';
 import rp from 'request-promise';
 import { expect } from 'chai';
+import Mockingbird from '../src/client';
 
 /**
  * Makes a JSON request to the mockingbird server.
@@ -15,7 +15,7 @@ function makeRequest(url, body) {
     json: true,
     simple: false,
     resolveWithFullResponse: true,
-    body: body,
+    body,
   };
   return rp(options);
 }
@@ -33,15 +33,14 @@ describe('Test mock', () => {
   });
 
   beforeEach(() => {
-    return mock.get('/users/test', { hello: 'world' }).reply(200, {
+    mock.get('/users/test', { hello: 'world' }).reply(200, {
       id: 'test-id',
       username: 'username',
     });
+    return mock.ready();
   });
 
-  afterEach(() => {
-    return mock.clean(); // Clean state after each test
-  });
+  afterEach(() => mock.clean()); // Clean state after each test
 
   it('should succesfully mock request expectation', () => {
     const body = { hello: 'world' };
@@ -127,7 +126,8 @@ describe('Test mock', () => {
   });
 
   it('should work properly with form data as string', () => {
-    return mock.post('/users/test2', 'id=test-id&username=username').reply(200, { id: 'test2' }).then(() => {
+    mock.post('/users/test2', 'id=test-id&username=username').reply(200, { id: 'test2' });
+    return mock.ready().then(() => {
       return rp({
         method: 'POST',
         url: `${mock.url}/users/test2`,

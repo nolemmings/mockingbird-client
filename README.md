@@ -36,10 +36,11 @@ describe('Test mock', () => {
   });
 
   it('should get a user', () => {
-    return mock.get('/users/test').reply(200, {
+    mock.get('/users/test').reply(200, {
       id: 'test-id',
       username: 'username',
-    }).then(() => {
+    });
+    mock.ready(() => {
       const options = {
         method: 'GET',
         uri: `${mock.url}/users/test`,
@@ -68,7 +69,7 @@ new Mockingbird(5000, 'e2e');
 
 ## ready()
 
-When you have to register a lot of expectations you can use `mock.ready()` to wait until all expectations have been registered at the mockingbird server.
+After registering your expectation call `mock.ready()` to send them to the mockingbird server and wait until all expectations have been registered at the mockingbird server.
 
 Example:
 

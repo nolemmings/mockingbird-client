@@ -11,28 +11,26 @@ const paths = {
   dest: 'lib',
 };
 
-gulp.task('clean', () => {
-  return del(paths.dest + '/*');
-});
+gulp.task('clean', () => del(`${paths.dest}/*`));
 
-gulp.task('copy', () => {
-  return gulp.src(`${paths.src}/**/*.json`)
-    .pipe(gulp.dest(paths.dest));
-});
+gulp.task('copy', () => (
+  gulp.src(`${paths.src}/**/*.json`)
+    .pipe(gulp.dest(paths.dest))
+));
 
-gulp.task('build', ['clean', 'copy'], () => {
-  return gulp.src(paths.src + '/**/*.js')
+gulp.task('build', ['clean', 'copy'], () => (
+  gulp.src(`${paths.src}/**/*.js`)
     .pipe(sourcemaps.init())
     .pipe(babel({
       presets: ['es2015'],
     }))
     .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(paths.dest));
-});
+    .pipe(gulp.dest(paths.dest))
+));
 
 gulp.task('serve', ['build'], () => {
   nodemon({
-    script: paths.dest + '/server.js',
+    script: `${paths.dest}/server.js`,
     tasks: ['lint', 'build'],
     watch: [paths.src],
   });
@@ -44,16 +42,16 @@ gulp.task('serve', ['build'], () => {
   });
 });
 
-gulp.task('lint', () => {
-  return gulp.src(['gulpfile.babel.js', 'src/**/*.js', 'test/**/*.js'])
+gulp.task('lint', () => (
+  gulp.src(['gulpfile.babel.js', 'src/**/*.js', 'test/**/*.js'])
     .pipe(eslint())
-    .pipe(eslint.format());
-});
+    .pipe(eslint.format())
+));
 
-gulp.task('test', () => {
-  return gulp.src(['test/**/*.js'])
-    .pipe(mocha());
-});
+gulp.task('test', () => (
+  gulp.src(['test/**/*.js'])
+    .pipe(mocha())
+));
 
 gulp.task('watch', ['build', 'lint'], () => {
   gulp.watch(['gulpfile.babel.js', 'src/**/*.js', 'test/**/*.js'], ['build', 'lint']);

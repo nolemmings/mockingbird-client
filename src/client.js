@@ -7,6 +7,7 @@ class Expectation {
     this.req = null;
     this.res = null;
     this.rep = 1;
+    this.promiseFunction = null;
     this.promise = null;
     this.finished = false;
   }
@@ -19,7 +20,7 @@ class Expectation {
     // Convert body to a string when necessary
     let requestBody = body;
     if (typeof body !== 'undefined' && typeof body !== 'string') {
-      if (typeof body === 'object' || typeof body === 'array') {
+      if (typeof body === 'object' || Array.isArray(body)) {
         requestBody = JSON.stringify(body);
       } else {
         requestBody = `${body}`;
@@ -43,7 +44,7 @@ class Expectation {
       headers,
       body,
     };
-    return this._end();
+    return this.end();
   }
 
   repeat(repeat) {
@@ -54,12 +55,19 @@ class Expectation {
     return this;
   }
 
+  startPromise() {
+    if (!this.promise) {
+      this.promise = this.promiseFunction();
+    }
+    return this.promise;
+  }
+
   /**
    * Adds expectation to the mockingbird server.
    */
-  _end() {
+  end() {
     this.finished = true;
-    this.promise = rp({
+    this.promiseFunction = () => rp({
       method: 'post',
       url: `${this.url}/expectations`,
       json: true,
@@ -91,7 +99,7 @@ class Mockingbird {
     return new Promise((resolve, reject) => {
       this.server = mockingbirdServer.listen(this.port, (err) => {
         if (err) return reject(err);
-        resolve(this.server);
+        return resolve(this.server);
       });
     });
   }
@@ -138,11 +146,11 @@ class Mockingbird {
    * Waits until all request promises are fulfilled.
    */
   ready() {
-    const promises = [];
-    for (const expectation of this.expectations) {
-      promises.push(expectation.promise);
-    }
-    return Promise.all(promises);
+    let result = Promise.resolve();
+    this.expectations.forEach((expectation) => {
+      result = result.then(() => expectation.startPromise());
+    });
+    return result;
   }
 
   /**
@@ -150,12 +158,12 @@ class Mockingbird {
    */
   expectAllConsumed() {
     return this.getTest().then((result) => {
-      for (const expectation of result.expectations) {
+      result.expectations.forEach((expectation) => {
         if (expectation.repeat !== -1 && expectation.requestCount < expectation.repeat) {
           throw new Error(`Expected url ${expectation.request.url} to be called `
             + `${expectation.repeat} times but was called ${expectation.requestCount} times`);
         }
-      }
+      });
     });
   }
 
@@ -167,10 +175,11 @@ class Mockingbird {
     return rp({
       method: 'delete',
       url: this.url,
-    }).catch((error) =>{
+    }).catch((error) => {
       if (error.statusCode !== 404) {
         return Promise.reject(error);
       }
+      return null;
     });
   }
 }
@@ -178,7 +187,7 @@ class Mockingbird {
 
 // Add helper methods for all HTTP verbs
 ['get', 'put', 'post', 'delete', 'patch', 'options', 'head'].forEach((method) => {
-  Mockingbird.prototype[method] = function(...args) {
+  Mockingbird.prototype[method] = function myMethod(...args) { // Don't use arrow function
     return this.request(method, ...args);
   };
 });
