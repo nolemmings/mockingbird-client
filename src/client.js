@@ -171,6 +171,9 @@ class Mockingbird {
    * Clears all expectations in Mockingbird.
    */
   clean() {
+    if (this.expectations.length === 0) {
+      return Promise.resolve(null);
+    }
     this.expectations = [];
     return rp({
       method: 'delete',
