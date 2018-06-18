@@ -1,6 +1,6 @@
 {
   "name": "@nolemmings/mockingbird-client",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Client for mockingbird server.",
   "repository": {
     "type": "git",
@@ -16,6 +16,7 @@
     "request-promise": "^4.1.1"
   },
   "devDependencies": {
+    "@nolemmings/mockingbird": "^0.3.2",
     "babel-core": "^5.8.25",
     "babel-eslint": "^7.1.1",
     "babel-preset-latest": "^6.22.0",
@@ -33,13 +34,14 @@
     "gulp-mocha": "^4.1.0",
     "gulp-nodemon": "^2.0.4",
     "gulp-sourcemaps": "^2.4.1",
+    "in-publish": "^2.0.0",
     "mocha": "^3.2.0",
     "request": "^2.80.0",
     "supertest": "^3.0.0"
   },
   "scripts": {
     "test": "mocha",
-    "prepublish": "gulp build && npm test"
+    "prepublish": "in-publish && gulp build && npm test"
   },
   "peerDependencies": {
     "@nolemmings/mockingbird": ">= 0.3 < 0.4"

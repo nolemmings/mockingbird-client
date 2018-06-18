@@ -7,6 +7,12 @@ Mockingbird is intended as a separate HTTP server with mocked requests while run
 ## Install
 
 ```
+yarn add -D @nolemmings/mockingbird @nolemmings/mockingbird-client
+```
+
+or
+
+```
 npm install --save-dev @nolemmings/mockingbird @nolemmings/mockingbird-client
 ```
 
