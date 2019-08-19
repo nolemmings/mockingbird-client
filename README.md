@@ -2,7 +2,7 @@
 
 This is a client library for [Mockingbird](https://github.com/nolemmings/mockingbird).
 
-Mockingbird is intended as a separate HTTP server with mocked requests while running your normal tests. You'll have to configure your system under test in such a way it directs its requests to the temporary mock server.
+Mockingbird is intended as a separate HTTP server with mocked requests while running your normal tests. You'll have to configure your system under test in such a way that its requests are directed to the temporary mock server.
 
 ## Install
 
@@ -46,6 +46,7 @@ describe('Test mock', () => {
       id: 'test-id',
       username: 'username',
     });
+
     mock.ready(() => {
       const options = {
         method: 'GET',
@@ -56,6 +57,7 @@ describe('Test mock', () => {
         json: true,
         resolveWithFullResponse: true,
       };
+
       return rp(options).then((res) => {
         expect(res.statusCode).to.equal(200);
         expect(res.body.id).to.equal('test-id');
@@ -75,7 +77,7 @@ new Mockingbird(5000, 'e2e');
 
 ## ready()
 
-After registering your expectation call `mock.ready()` to send them to the mockingbird server and wait until all expectations have been registered at the mockingbird server.
+After registering your expectation, call `mock.ready()` to send them to the mockingbird server and wait until all expectations have been registered at the mockingbird server.
 
 Example:
 
@@ -87,13 +89,14 @@ beforeEach(() => {
   mock.get('/users/2').reply(200, { id: '2' });
   mock.delete('/users/1').reply(204);
   mock.delete('/users/2').reply(204);
+
   return mock.ready();
 });
 ```
 
 ## getTest()
 
-Returns the test currently being run registered in the Mockingbird server.
+Returns the currently running test in the Mockingbird server.
 
 Example:
 
